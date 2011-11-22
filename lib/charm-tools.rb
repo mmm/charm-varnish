@@ -54,7 +54,7 @@ module CharmTools
   end
 
   def expand_template(filename)
-    template_path = File.join('./templates',filename)
+    template_path = File.join(ENV['CHARM_DIR'],'templates',filename)
     ERB.new(File.read(template_path)).result(binding)
   end
 
