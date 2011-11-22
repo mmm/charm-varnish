@@ -1,0 +1,25 @@
+#!/usr/bin/ruby -w
+
+require 'lib/charm-tools'
+
+log "backend relation changed"
+
+def update_backends
+  # read current backends
+  # update backends via 'relation-list' and 'relation-get'
+  # save current backends
+  @backends = [{:name => "one", :host => "hostone", :port => "portone"},{:name => "two", :host => "hosttwo", :port => "porttwo"}]
+end
+update_backends
+
+def update_varnish_config
+  log "Writing varnish config"
+  config_file = '/etc/varnish/default.vcl'
+  File.rename(config_file,"#{config_file}.dist") if File.exists?(config_file)
+  expand_template_to_file( 'default.vcl.erb',  config_file )
+end
+update_varnish_config
+
+log "Start Varnish"
+restart_service "varnish"
+

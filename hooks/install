@@ -1,0 +1,24 @@
+#!/bin/bash
+set -eu
+
+apt-get -y install -qq ruby
+apt-get -y install -qq varnish
+
+varnish_already_configured() {
+  false
+}
+configure_varnish() {
+  juju-log "config varnish after install"
+  mkdir -p /var/lib/varnish/default/
+  cat > /etc/default/varnish <<EOF
+  START=yes
+  NFILES=131072
+  MEMLOCK=82000
+  DAEMON_OPTS="-a :80 \
+               -f /etc/varnish/default.vcl \
+               -S /etc/varnish/secret \
+               -s file,/var/lib/varnish/default/varnish_storage.bin,1G"
+EOF
+}
+varnish_already_configured || configure_varnish
+

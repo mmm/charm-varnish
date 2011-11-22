@@ -1,0 +1,6 @@
+#!/usr/bin/ruby -w
+
+require 'lib/charm-tools'
+
+log "backend joined"
+

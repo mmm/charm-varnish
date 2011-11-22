@@ -1,0 +1,9 @@
+name: varnish
+summary: "Varnish caching / load balancing" 
+description: "Varnish caching / load balancing"
+requires:
+  reverseproxy:
+    interface: http
+provides:
+  website:
+    interface: http
