@@ -5,10 +5,14 @@ require 'lib/charm-tools'
 log "backend relation changed"
 
 def current_backends
-  # read current backends
+  # read backends from local config store
+  backends = unit_config[:backends]
   # update backends via 'relation-list' and 'relation-get'
-  # save current backends
-  [{:name => "one", :address => "192.168.122.1", :port => "80"},{:name => "two", :address => "192.168.122.2", :port => "80"}]
+  backends.each do |backend|
+  end
+  # save current backends in the local config store
+  write_unit_config
+  backends
 end
 
 def update_varnish_config

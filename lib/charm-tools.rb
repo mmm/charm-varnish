@@ -45,6 +45,14 @@ module CharmTools
   end
   def read_unit_config(file)
   end
+  def unit_config
+    {
+      :backends => { 
+        "one" => {:address => "192.168.122.1", :port => "80"},
+        "two" => {:address => "192.168.122.2", :port => "80"}
+      }
+    }
+  end
 
   def expand_template_to_file( template,  target )
     begin
