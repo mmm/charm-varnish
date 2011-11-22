@@ -4,13 +4,12 @@ require 'lib/charm-tools'
 
 log "backend relation changed"
 
-def update_backends
+def current_backends
   # read current backends
   # update backends via 'relation-list' and 'relation-get'
   # save current backends
-  @backends = [{:name => "one", :host => "hostone", :port => "portone"},{:name => "two", :host => "hosttwo", :port => "porttwo"}]
+  [{:name => "one", :address => "192.168.122.1", :port => "80"},{:name => "two", :address => "192.168.122.2", :port => "80"}]
 end
-update_backends
 
 def update_varnish_config
   log "Writing varnish config"

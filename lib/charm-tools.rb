@@ -3,6 +3,10 @@ require 'erb'
 
 module CharmTools
 
+  def service_name
+    ENV['JUJU_UNIT_NAME'].gsub(/\/.*/,"")
+  end
+
   def running_in_unit?
     ENV.keys.any?{|key| key =~ /JUJU_AGENT/}
   end
