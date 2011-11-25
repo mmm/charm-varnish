@@ -4,14 +4,25 @@ require 'lib/charm-tools'
 
 log "backend relation changed"
 
-def current_backends
-  # read backends from local config store
-  backends = unit_config[:backends]
-  # update backends via 'relation-list' and 'relation-get'
-  #backends.each do |backend|
-  #end
-  # save current backends in the local config store
-  #write_unit_config
+def safe_unit_name
+  ENV['JUJU_UNIT_NAME'].gsub(/\//, "-")
+end
+
+def current_backend
+  @current_backend ||= {
+    :name => safe_unit_name
+    :address => `relation-get private-address`,
+    :port => `relation-get port` 
+  }
+end
+
+def active_backends
+  backends = local_config_get(:active_backends) || []
+  unless backends.include?(current_backend)
+    backends << current_backend
+    local_config_set({ :active_backends => backends })
+    # maybe also check the full `relation-list`?
+  end
   backends
 end
 
