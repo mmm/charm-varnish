@@ -5,7 +5,7 @@ require 'lib/charm-tools'
 log "backend relation changed"
 
 def safe_unit_name
-  ENV['JUJU_UNIT_NAME'].gsub(/\//, "-")
+  ENV['JUJU_UNIT_NAME'].gsub(/\//, "_")
 end
 
 def current_backend
