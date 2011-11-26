@@ -9,20 +9,18 @@ def safe_unit_name
 end
 
 def current_backend
-  @current_backend ||= {
-    :name => safe_unit_name
-    :address => `relation-get private-address`,
-    :port => `relation-get port` 
+  {
+    safe_unit_name => {
+      :address => `relation-get private-address`.chomp,
+      :port => `relation-get port`.chomp 
+    }
   }
 end
 
 def active_backends
-  backends = local_config_get(:active_backends) || []
-  unless backends.include?(current_backend)
-    backends << current_backend
-    local_config_set({ :active_backends => backends })
-    # maybe also check the full `relation-list`?
-  end
+  backends = local_config_get(:active_backends) || {}
+  backends.update(current_backend) # maybe also check the full `relation-list`?
+  local_config_set({ :active_backends => backends })
   backends
 end
 
@@ -34,6 +32,6 @@ def update_varnish_config
 end
 update_varnish_config
 
-log "Start Varnish"
+log "Restart Varnish"
 restart_service "varnish"
 
