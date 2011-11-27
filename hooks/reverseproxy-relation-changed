@@ -4,13 +4,13 @@ require 'lib/charm-tools'
 
 log "backend relation changed"
 
-def safe_unit_name
-  ENV['JUJU_UNIT_NAME'].gsub(/\//, "_")
+def safe_remote_unit_name
+  ENV['JUJU_REMOTE_UNIT'].gsub(/\//, "_")
 end
 
 def current_backend
   {
-    safe_unit_name => {
+    safe_remote_unit_name => {
       :address => `relation-get private-address`.chomp,
       :port => `relation-get port`.chomp 
     }
