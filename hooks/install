@@ -22,3 +22,4 @@ EOF
 }
 varnish_already_configured || configure_varnish
 
+open-port 80/TCP
