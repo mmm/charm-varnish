@@ -1,8 +1,6 @@
 
 # TODO
 
-- reverseproxy-relation-departed
-  - same as changed?
 - config
   - external port
   - cache size
@@ -11,6 +9,7 @@
 - charm-tools
   - tests
   - gemify
+  - exceptions for config files
 - not restarting on ec2, but working fine on lxc
 
 # Varnish

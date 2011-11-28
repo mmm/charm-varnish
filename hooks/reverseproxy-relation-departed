@@ -1,0 +1,28 @@
+#!/usr/bin/ruby -w
+
+require 'lib/charm-tools'
+
+log "backend relation departed"
+
+def safe_remote_unit_name
+  ENV['JUJU_REMOTE_UNIT'].gsub(/\//, "_")
+end
+
+def active_backends
+  backends = local_config_get(:active_backends) || {}
+  backends.delete(safe_remote_unit_name) # maybe also check the full `relation-list`?
+  local_config_set({ :active_backends => backends })
+  backends
+end
+
+def update_varnish_config
+  log "Writing varnish config"
+  config_file = '/etc/varnish/default.vcl'
+  File.rename(config_file,"#{config_file}.dist") if File.exists?(config_file)
+  expand_template_to_file( 'default.vcl.erb',  config_file )
+end
+update_varnish_config
+
+log "Restart Varnish"
+restart_service "varnish"
+
